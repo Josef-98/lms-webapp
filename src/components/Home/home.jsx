@@ -4,6 +4,7 @@ import ListStudent from '../Student/List-Student'
 import NewStudent from '../Student/NewStudent';
 import StudentModel from './../../model/student';
 import React from 'react';
+import axios from "../../util/axios"
 
 
 class Home extends React.Component {
@@ -55,24 +56,28 @@ class Home extends React.Component {
         else {
             event.target.reset();
             let nStudent = new StudentModel(
-                this.state.list_student_data.length+1,
                 this.state.nom,
                 this.state.pren,
                 this.state.email,
                 this.state.avatar,
                 false
             );
-this.setState({
-    nom:"",
-    pren:"",
-    email:"",
-    avatar:""
-})
+            this.setState({
+                nom: "",
+                pren: "",
+                email: "",
+                avatar: ""
+            })
+
             // ajouter student a la list
             let newStudentlist = this.state.list_student_data;
             newStudentlist.push(nStudent);
             this.setState({ list_student_data: newStudentlist })
             console.log(this.state.list_student_data)
+
+
+            // ajouter l'etudiant a la partie serveur (firebase) en utilisant axios 
+            axios.post("students.json", nStudent)
         }
     }
 
@@ -81,7 +86,6 @@ this.setState({
         let inputname = event.target.name;
         this.setState({ [inputname]: value })
     }
-
 }
 
 export default Home;
