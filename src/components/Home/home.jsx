@@ -74,31 +74,58 @@ class Home extends React.Component {
             let newStudentlist = this.state.list_student_data;
             newStudentlist.push(nStudent);
             this.setState({ list_student_data: newStudentlist })
-            console.log(this.state.list_student_data)
 
 
             // ajouter l'etudiant a la partie serveur (firebase) en utilisant axios 
             const data_student = {
-                nom:nStudent.nom,
-                pren:nStudent.pren,
-                email:nStudent.email,
-                avatar:nStudent.avatar
-              }
-            
-            axios.post("students.json", data_student).then((response)=>{
-               let id_new_student=response.data.name;
-               console.log(id_new_student)
-               const myNewStudent={
-                   nom:nStudent.nom,
-                   pren:nStudent.pren,
-                   email:nStudent.email,
-                   avatar:nStudent.avatar,
-                   id:id_new_student
+                nom: nStudent.nom,
+                pren: nStudent.pren,
+                email: nStudent.email,
+                avatar: nStudent.avatar,
+                isPresence:nStudent.isPresence
+            }
 
-               }
-               console.log(myNewStudent)
+            axios.post("students.json", data_student).then((response) => {
+                let id_new_student = response.data.name;
+                const myNewStudent = {
+                    nom: nStudent.nom,
+                    pren: nStudent.pren,
+                    email: nStudent.email,
+                    avatar: nStudent.avatar,
+                    id: id_new_student
+                }
+                let newListStudent = this.state.list_student_data;
+                newListStudent.forEach(s => {
+                    if (s.id == 0) {
+                        s.id = id_new_student;
+                    }
+                    // modifier la list sur le state
+                    this.setState({list_student_data:newListStudent})
+                })
             })
         }
+    }
+    // recuperer la liste des etudiants depuis firebase onload page avec firebase
+
+    componentDidMount() {
+        axios.get("students.json").then((response) => {
+            // extraire toutes les cle de l'objet data
+            let keys = Object.keys(response.data)
+            // parcourir les keys
+           let ListEtudiant= keys.map(k => {
+
+                let ns = new StudentModel(k, response.data[k].nom,
+                    response.data[k].pren,
+                    response.data[k].email,
+                    response.data[k].avatar,
+                    response.data[k].isPresence);
+                // creer la nouvelle list des etudiants
+            return ns;
+            })
+
+            // ajouter la list 
+            this.setState({list_student_data:ListEtudiant})
+        })
     }
 
     changeInput = (event) => {
