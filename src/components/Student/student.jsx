@@ -29,7 +29,7 @@ export default function Student(props) {
                     <button className="mz-1 btn btn-warning m-1 rounded-circle ">
                         <i className="fas fa-edit" />
                     </button>
-                    <button className="mz-1 btn btn-danger m-1 rounded-circle">
+                    <button className="mz-1 btn btn-danger m-1 rounded-circle" onClick={()=>props.handelDeleteStudent(props.data.id)}>
                         <i className="fas fa-trash" />
                     </button>
                 </div>

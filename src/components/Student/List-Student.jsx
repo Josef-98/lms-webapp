@@ -11,10 +11,14 @@ export default function ListStudent(props) {
             />
             <div className="p-5 d-flex flex-wrap justify-content-center ">
                 {/* affiche la list dynamiquement des student avec function Map */}
-             {
-             props.dataList.map(s=><Student key={s.id} data={s}/>)
-             }   
-             {/* student la list manuelment  */}
+                {
+                    props.dataList.map(s =>
+                        <Student
+                            key={s.id} data={s}
+                            handelDeleteStudent={props.handelDelete}
+                        />)
+                }
+                {/* student la list manuelment  */}
                 {/* <Student data={props.dataList[0]}/>
                 <Student data={props.dataList[1]}/>
                 <Student data={props.dataList[2]}/> */}

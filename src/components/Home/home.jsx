@@ -42,7 +42,10 @@ class Home extends React.Component {
 
                     />
                     {/* List student */}
-                    <ListStudent dataList={this.state.list_student_data} />
+                    <ListStudent
+                     dataList={this.state.list_student_data} 
+                     handelDelete={this.deletStudent}
+                    />
                 </div>
             </>
         )
@@ -132,6 +135,18 @@ class Home extends React.Component {
         let value = event.target.value;
         let inputname = event.target.name;
         this.setState({ [inputname]: value })
+    }
+    deletStudent=(idStudent)=>{
+        axios.delete("students/"+idStudent+".json").then((response)=>{
+            let newList=this.state.list_student_data;
+           newList= newList.filter(s=>s.id!=idStudent);
+           this.setState({list_student_data:newList})
+
+
+
+
+        })
+
     }
 }
 
