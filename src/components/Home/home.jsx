@@ -56,6 +56,7 @@ class Home extends React.Component {
         else {
             event.target.reset();
             let nStudent = new StudentModel(
+                0,
                 this.state.nom,
                 this.state.pren,
                 this.state.email,
@@ -77,7 +78,26 @@ class Home extends React.Component {
 
 
             // ajouter l'etudiant a la partie serveur (firebase) en utilisant axios 
-            axios.post("students.json", nStudent)
+            const data_student = {
+                nom:nStudent.nom,
+                pren:nStudent.pren,
+                email:nStudent.email,
+                avatar:nStudent.avatar
+              }
+            
+            axios.post("students.json", data_student).then((response)=>{
+               let id_new_student=response.data.name;
+               console.log(id_new_student)
+               const myNewStudent={
+                   nom:nStudent.nom,
+                   pren:nStudent.pren,
+                   email:nStudent.email,
+                   avatar:nStudent.avatar,
+                   id:id_new_student
+
+               }
+               console.log(myNewStudent)
+            })
         }
     }
 
